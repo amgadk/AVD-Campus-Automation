@@ -5,7 +5,7 @@ port_profiles:
   - profile: PP-DOT1X
     mode: "trunk phone"
     spanning_tree_portfast: edge
-    spanning_tree_bpduguard: enabled
+    spanning_tree_bpduguard: disabled
     poe:
       priority: critical
       reboot:

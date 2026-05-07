@@ -22,34 +22,34 @@ DC1:
       children:
         DC1_SPINES:
           hosts:
-            campus-spine1:
-              ansible_host: 10.18.136.228
-            campus-spine2:
-              ansible_host: 10.18.137.91
+            spine1:
+              ansible_host: 192.168.0.22
+            spine2:
+              ansible_host: 192.168.0.23
         DC1_LEAFS:
           hosts:
             pod-1-1:
-              ansible_host: 10.18.137.92
+              ansible_host: 192.168.0.11
             pod-1-2:
-              ansible_host: 10.18.137.107
+              ansible_host: 192.168.0.12
             pod-2-1:
-              ansible_host: 10.18.136.181
+              ansible_host: 192.168.0.13
             pod-2-2:
-              ansible_host: 10.18.137.114
+              ansible_host: 192.168.0.14
             pod-2-3:
-              ansible_host: 10.18.136.179
+              ansible_host: 192.168.0.15
             pod-2-4:
-              ansible_host: 10.18.136.145
+              ansible_host: 192.168.0.16
             pod-3-1:
-              ansible_host: 10.18.136.246
+              ansible_host: 192.168.0.17
             pod-3-2:
-              ansible_host: 10.18.137.12
+              ansible_host: 192.168.0.18
             pod-3-3:
-              ansible_host: 10.18.137.99
+              ansible_host: 192.168.0.19
             pod-4-1:
-              ansible_host: 10.18.136.173
+              ansible_host: 192.168.0.20
             pod-5-1:
-              ansible_host: 10.18.136.151
+              ansible_host: 192.168.0.21
     DC1_NETWORK_SERVICES:
       children:
         DC1_LEAFS:

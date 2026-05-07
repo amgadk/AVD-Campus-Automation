@@ -7,8 +7,11 @@ fabric_name: DC1_FABRIC
 #design:
 #  type: l2ls
 
+management_eapi:
+  enabled: true
+
 # Spine Switches
-l2spine:
+l3spine:
   defaults:
     campus: C
     campus_pod: C1
@@ -23,10 +26,10 @@ l2spine:
   node_groups:
     - group: SPINES
       nodes:
-        - name: campus-spine1
+        - name: spine1
           id: 1
           mgmt_ip: 192.168.0.22/24
-        - name: campus-spine2
+        - name: spine2
           id: 2
           mgmt_ip: 192.168.0.23/24
 
@@ -57,12 +60,12 @@ l2leaf:
         - name: pod-1-1
           id: 3
           mgmt_ip: 192.168.0.11/24
-          uplink_switches: [campus-spine1]
+          uplink_switches: [spine1]
           uplink_switch_interfaces: [Ethernet1]
         - name: pod-1-2
           id: 4
           mgmt_ip: 192.168.0.12/24
-          uplink_switches: [campus-spine2]
+          uplink_switches: [spine2]
           uplink_switch_interfaces: [Ethernet1]
     - group: POD-4
       campus_access_pod: BUILDING-4
@@ -74,7 +77,7 @@ l2leaf:
           id: 5
           mgmt_ip: 192.168.0.20/24
           uplink_interfaces: [Ethernet49, Ethernet50]
-          uplink_switches: [campus-spine1, campus-spine2]
+          uplink_switches: [spine1, spine2]
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
     - group: POD-5
       campus_access_pod: BUILDING-5
@@ -86,7 +89,7 @@ l2leaf:
           id: 6
           mgmt_ip: 192.168.0.21/24
           uplink_interfaces: [Ethernet49, Ethernet50]
-          uplink_switches: [campus-spine1, campus-spine2]
+          uplink_switches: [spine1, spine2]
           uplink_switch_interfaces: [Ethernet5, Ethernet5]
     - group: POD-2
       campus_access_pod: BUILDING-2
@@ -99,12 +102,12 @@ l2leaf:
         - name: pod-2-1
           id: 7
           mgmt_ip: 192.168.0.13/24
-          uplink_switches: [campus-spine1]
+          uplink_switches: [spine1]
           uplink_switch_interfaces: [Ethernet2]
         - name: pod-2-2
           id: 8
           mgmt_ip: 192.168.0.14/24
-          uplink_switches: [campus-spine2]
+          uplink_switches: [spine2]
           uplink_switch_interfaces: [Ethernet2]
     - group: POD-2-3
       campus_access_pod: BUILDING-2
@@ -139,12 +142,12 @@ l2leaf:
         - name: pod-3-1
           id: 11
           mgmt_ip: 192.168.0.17/24
-          uplink_switches: [campus-spine1]
+          uplink_switches: [spine1]
           uplink_switch_interfaces: [Ethernet3]
         - name: pod-3-2
           id: 12
           mgmt_ip: 192.168.0.18/24
-          uplink_switches: [campus-spine2]
+          uplink_switches: [spine2]
           uplink_switch_interfaces: [Ethernet3]
     - group: POD-3-3
       campus_access_pod: BUILDING-3
@@ -171,11 +174,11 @@ underlay_routing_protocol: ospf
 core_interfaces:
   p2p_links:
     - ip: [ 10.0.0.3/31, 10.0.0.2/31 ]
-      nodes: [ campus-spine1, WAN ]
+      nodes: [ spine1, WAN ]
       interfaces: [ Ethernet51, Ethernet52 ]
       include_in_underlay_protocol: true
     - ip: [ 10.0.0.5/31, 10.0.0.4/31 ]
-      nodes: [ campus-spine2, WAN ]
+      nodes: [ spine2, WAN ]
       interfaces: [ Ethernet51, Ethernet52 ]
       include_in_underlay_protocol: true
 

@@ -2,3 +2,61 @@
 ### group_vars/DC1_LEAFS.yml
 
 type: l2leaf     # Must be leaf
+
+dot1x_settings:
+  enabled: true
+  authentication:
+    # radius_groups: [agni.arista.com]
+  # accounting:
+  #   radius_groups: [ agni.arista.com ]
+    # multicast: true
+    # syslog: true
+  # dynamic_authorization:
+  #   additional_groups: [ agni.arista.com ]
+  mac_based_authentication:
+    username_format:
+      delimiter: colon
+      letter_case: uppercase
+  # radius_av_pairs:
+  #   service_type: true
+  bypass_bpdu: false
+  bypass_lldp: true
+  redistribute_in_evpn: true
+
+
+# dot1x_settings:
+#   enabled: true
+
+# custom_structured_configuration_dot1x:
+#   protocol_bpdu_bypass: true
+
+# local users
+aaa_settings:
+  # AAA Authorization
+  authorization:
+    exec:
+      default: local
+  radius:
+    servers:
+      - host: agni.arista.com
+        key: 071B245F5A
+
+# custom_structured_configuration_radius_server:
+#   servers:
+#     - host: agni.arista.com
+#       key: super-secret-key
+
+
+
+  # local_users:
+  #   # Username with no password configured
+  #   - name: admin
+  #     privilege: 15
+  #     role: network-admin
+  #     no_password: true
+
+  #   # Username with a password
+  #   - name: arista
+  #     privilege: 15
+  #     role: network-admin
+  #     sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
