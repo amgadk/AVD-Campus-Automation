@@ -1,0 +1,185 @@
+---
+### group_vars/DC1_FABRIC.yml
+
+fabric_name: DC1_FABRIC
+
+# Set Design Type to L2ls
+#design:
+#  type: l2ls
+
+# Spine Switches
+l2spine:
+  defaults:
+    campus: C
+    campus_pod: C1
+    platform: vEOS-lab
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 4096
+    loopback_ipv4_pool: 172.16.1.0/24
+    mlag_peer_ipv4_pool: 192.168.55.0/24
+    mlag_peer_l3_ipv4_pool: 10.1.1.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    mlag_interfaces: [Ethernet55/1, Ethernet56/1]
+  node_groups:
+    - group: SPINES
+      nodes:
+        - name: campus-spine1
+          id: 1
+          mgmt_ip: 192.168.0.22/24
+        - name: campus-spine2
+          id: 2
+          mgmt_ip: 192.168.0.23/24
+
+# IDF - Leaf Switches
+
+#campus_access_pod: BUILDING-A
+#cv_tags_topology_type: "member-leaf"
+
+l2leaf:
+  defaults:
+    campus: C
+    campus_pod: C1
+    platform: vEOS-lab
+    mlag_peer_ipv4_pool: 192.168.55.0/24
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+    #inband_mgmt_subnet: 10.10.10.0/24
+    inband_mgmt_vlan: 10
+  node_groups:
+    - group: POD-1
+      campus_access_pod: BUILDING-1
+      mlag: true
+      uplink_interfaces: [Ethernet49]
+      mlag_interfaces: [Ethernet51, Ethernet52]
+      filter:
+        tags: [ "110", "130" ]
+      nodes:
+        - name: pod-1-1
+          id: 3
+          mgmt_ip: 192.168.0.11/24
+          uplink_switches: [campus-spine1]
+          uplink_switch_interfaces: [Ethernet1]
+        - name: pod-1-2
+          id: 4
+          mgmt_ip: 192.168.0.12/24
+          uplink_switches: [campus-spine2]
+          uplink_switch_interfaces: [Ethernet1]
+    - group: POD-4
+      campus_access_pod: BUILDING-4
+      mlag: false
+      filter:
+        tags: [ "210", "220", "230" ]
+      nodes:
+        - name: pod-4-1
+          id: 5
+          mgmt_ip: 192.168.0.20/24
+          uplink_interfaces: [Ethernet49, Ethernet50]
+          uplink_switches: [campus-spine1, campus-spine2]
+          uplink_switch_interfaces: [Ethernet4, Ethernet4]
+    - group: POD-5
+      campus_access_pod: BUILDING-5
+      mlag: false
+      filter:
+        tags: [ "210", "220", "230" ]
+      nodes:
+        - name: pod-5-1
+          id: 6
+          mgmt_ip: 192.168.0.21/24
+          uplink_interfaces: [Ethernet49, Ethernet50]
+          uplink_switches: [campus-spine1, campus-spine2]
+          uplink_switch_interfaces: [Ethernet5, Ethernet5]
+    - group: POD-2
+      campus_access_pod: BUILDING-2
+      mlag: true
+      uplink_interfaces: [Ethernet49]
+      mlag_interfaces: [Ethernet51, Ethernet52]
+      filter:
+        tags: [ "110", "120", "130" ]
+      nodes:
+        - name: pod-2-1
+          id: 7
+          mgmt_ip: 192.168.0.13/24
+          uplink_switches: [campus-spine1]
+          uplink_switch_interfaces: [Ethernet2]
+        - name: pod-2-2
+          id: 8
+          mgmt_ip: 192.168.0.14/24
+          uplink_switches: [campus-spine2]
+          uplink_switch_interfaces: [Ethernet2]
+    - group: POD-2-3
+      campus_access_pod: BUILDING-2
+      cv_tags_topology_type: "member-leaf"
+      mlag: false
+      uplink_switches: [pod-2-1, pod-2-2]
+      uplink_interfaces: [Ethernet47, Ethernet48]
+      nodes:
+        - name: pod-2-3
+          id: 9
+          mgmt_ip: 192.168.0.15/24
+          uplink_switch_interfaces: [Ethernet47, Ethernet47]
+    - group: POD-2-4
+      campus_access_pod: BUILDING-2
+      cv_tags_topology_type: "member-leaf"
+      mlag: false
+      uplink_switches: [pod-2-1, pod-2-2]
+      uplink_interfaces: [Ethernet47, Ethernet48]
+      nodes:
+        - name: pod-2-4
+          id: 10
+          mgmt_ip: 192.168.0.16/24
+          uplink_switch_interfaces: [Ethernet48, Ethernet48]
+    - group: POD-3
+      campus_access_pod: BUILDING-3
+      mlag: true
+      uplink_interfaces: [Ethernet49]
+      mlag_interfaces: [Ethernet51, Ethernet52]
+      filter:
+        tags: [ "110", "120", "130" ]
+      nodes:
+        - name: pod-3-1
+          id: 11
+          mgmt_ip: 192.168.0.17/24
+          uplink_switches: [campus-spine1]
+          uplink_switch_interfaces: [Ethernet3]
+        - name: pod-3-2
+          id: 12
+          mgmt_ip: 192.168.0.18/24
+          uplink_switches: [campus-spine2]
+          uplink_switch_interfaces: [Ethernet3]
+    - group: POD-3-3
+      campus_access_pod: BUILDING-3
+      cv_tags_topology_type: "member-leaf"
+      mlag: false
+      uplink_switches: [pod-3-1, pod-3-2]
+      uplink_interfaces: [Ethernet47, Ethernet48]
+      nodes:
+        - name: pod-3-3
+          id: 13
+          mgmt_ip: 192.168.0.19/24
+          uplink_switch_interfaces: [Ethernet47, Ethernet47]
+
+
+
+
+#### Override for vEOS/cEOS Lab Caveats ####
+p2p_uplinks_mtu: 1500
+
+# Underlay Routing Protocol
+underlay_routing_protocol: ospf
+
+#### WAN/Core Edge Links ####
+core_interfaces:
+  p2p_links:
+    - ip: [ 10.0.0.3/31, 10.0.0.2/31 ]
+      nodes: [ campus-spine1, WAN ]
+      interfaces: [ Ethernet51, Ethernet52 ]
+      include_in_underlay_protocol: true
+    - ip: [ 10.0.0.5/31, 10.0.0.4/31 ]
+      nodes: [ campus-spine2, WAN ]
+      interfaces: [ Ethernet51, Ethernet52 ]
+      include_in_underlay_protocol: true
+
+
+generate_cv_tags:
+  campus_fabric: true
+  topology_hints: true

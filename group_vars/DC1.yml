@@ -1,0 +1,31 @@
+---
+### group_vars/DC1.yml
+
+# local users
+aaa_settings.local_users:
+  - name: arista
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$DQTG98XpL1J25XLp$IdueK0fkbAvEtiYxuIUrG9snWSN/JOhPwjGd.cOrMvoVCdFHRAD7HOL5kUJMRFT8sgTBbRKlgtxRo5b8QS1wY0"
+
+# AAA Authorization
+##aaa_authorization:
+  ##exec:
+    ##default: local
+
+# OOB Management network default gateway.
+mgmt_interface_vrf: default
+#mgmt_gateway: 192.168.0.1
+mgmt_interface: Management1
+
+# dns servers.
+##name_servers:
+  ##- 8.8.4.4
+  ##- 8.8.8.8
+
+# NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: time.google.com
+    - name: pool.ntp.org
