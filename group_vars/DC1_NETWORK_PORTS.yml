@@ -51,12 +51,12 @@ network_ports:
         action: allow
         allow_vlan: 130
 
-# ---------------- IDF2 ----------------
+# ---------------- POD-4 ----------------
 
   - switches:
-      - LEAF2A
+      - pod-4-1
     switch_ports:
-      - Ethernet3-7/1-48
+      - Ethernet3-7
     description: IDF2 Standard Port
     profile: PP-DOT1X
     native_vlan: 210
@@ -69,12 +69,12 @@ network_ports:
         action: allow
         allow_vlan: 230
 
-# ---------------- IDF3 ----------------
+# ---------------- POD-2 ----------------
 
   - switches:
-      - LEAF3[ABCDE] # regex match LEAF3A, LEAF3B, LEAF3C, LEAF3D, LEAF3E
+      - pod-2-[12] # regex match pod-2-1, pod-2-2, pod-2-3
     switch_ports:
-      - Ethernet1-96
+      - Ethernet1-12
     description: IDF3 Standard Port
     profile: PP-DOT1X
     native_vlan: 310

@@ -3,6 +3,22 @@
 
 fabric_name: DC1_FABRIC
 
+# Ansible connectivity definitions
+# eAPI connectivity via HTTPS is specified (as opposed to CLI via SSH)
+ansible_connection: ansible.netcommon.httpapi
+# Specifies that we are indeed using Arista EOS
+ansible_network_os: arista.eos.eos
+# This user/password must exist on the switches to enable Ansible access
+ansible_user: arista
+ansible_password: "Arista123!"
+# User escalation (to enter enable mode)
+ansible_become: true
+ansible_become_method: enable
+# Use SSL (HTTPS)
+ansible_httpapi_use_ssl: true
+# Do not try to validate certs
+ansible_httpapi_validate_certs: false
+
 # Set Design Type to L2ls
 #design:
 #  type: l2ls
@@ -69,7 +85,7 @@ l2leaf:
           uplink_switch_interfaces: [Ethernet1]
     - group: POD-4
       campus_access_pod: BUILDING-4
-      mlag: false
+      mlag: true
       filter:
         tags: [ "210", "220", "230" ]
       nodes:
@@ -81,7 +97,7 @@ l2leaf:
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
     - group: POD-5
       campus_access_pod: BUILDING-5
-      mlag: false
+      mlag: true
       filter:
         tags: [ "210", "220", "230" ]
       nodes:
@@ -112,7 +128,7 @@ l2leaf:
     - group: POD-2-3
       campus_access_pod: BUILDING-2
       cv_tags_topology_type: "member-leaf"
-      mlag: false
+      mlag: true
       uplink_switches: [pod-2-1, pod-2-2]
       uplink_interfaces: [Ethernet47, Ethernet48]
       nodes:
@@ -123,7 +139,7 @@ l2leaf:
     - group: POD-2-4
       campus_access_pod: BUILDING-2
       cv_tags_topology_type: "member-leaf"
-      mlag: false
+      mlag: true
       uplink_switches: [pod-2-1, pod-2-2]
       uplink_interfaces: [Ethernet47, Ethernet48]
       nodes:
@@ -152,7 +168,7 @@ l2leaf:
     - group: POD-3-3
       campus_access_pod: BUILDING-3
       cv_tags_topology_type: "member-leaf"
-      mlag: false
+      mlag: true
       uplink_switches: [pod-3-1, pod-3-2]
       uplink_interfaces: [Ethernet47, Ethernet48]
       nodes:
